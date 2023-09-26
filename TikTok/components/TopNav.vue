@@ -20,8 +20,10 @@
                     <Icon name="mdi:plus" color="#000000" size="22" />
                     <span class="px-2 font-medium text-[15px]">Upload</span>
                 </button>
-                <div v-if="false" class="flex items-center">
-                    <button class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]">
+                <div v-if="!$userStore.id" class="flex items-center">
+                    <button 
+                        @click="$event=> $generalStore.isLoginOpen = true"
+                        class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]">
                         <span class="mx-4 font-medium text-[15px]">Log in</span>
                     </button>
                     <Icon name="mdi:dots-vertical" color="#161724" size="25" />
@@ -56,6 +58,8 @@
 </template>
 
 <script setup>
+const {$userStore,$generalStore} = useNuxtApp()
+
 const route = useRoute()
 let showMenu = ref(false)
 

@@ -6,7 +6,8 @@
         <div class="relative bg-white w-full max-w-[470px] h-[70%] p-4 rounded-lg">
 
             <div class="w-full flex justify-end">
-                <button 
+                <button
+                    @click="$event => $generalStore.isLoginOpen = false"
                     class="p-1.5 rounded-full bg-gray-100"
                 >
                     <Icon name="mdi:close" size="26"/>
@@ -17,7 +18,7 @@
             <Register v-else />
 
             <div class="absolute flex items-center justify-center py-5 left-0 bottom-0 border-t w-full">
-                <span class="text-[14px] text-gray-600">Don’t have an account?</span>
+                <span class="text-[14px] text-gray-600">Don't have an account?</span>
                 <button 
                     @click="isRegister = !isRegister" 
                     class="text-[14px] text-[#F02C56] font-semibold pl-1"
@@ -32,5 +33,6 @@
 </template>
 
 <script setup>
+const {$generalStore} = useNuxtApp()
 let isRegister = ref(true)
 </script>
