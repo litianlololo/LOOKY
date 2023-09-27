@@ -28,7 +28,9 @@
 
             <div class="mt-2.5 flex">
                 <div
-                    class="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl cursor-pointer">
+                    class="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl cursor-pointer"
+                    ref="videoContainer"
+                    >
                     <video 
                         ref="video"
                         loop
@@ -75,6 +77,39 @@
 </template>
 
 <script setup>
-let video = ref(null)
-onMounted(()=>video.value.play())
+import { ref, onMounted, onUnmounted } from 'vue';
+
+let video = ref(null);
+let videoContainer = ref(null);
+let observer = null;
+
+onMounted(() => {
+  // 创建 Intersection Observer
+  observer = new IntersectionObserver(handleIntersection, {
+    root: null, // 使用默认的根元素，即视口
+    threshold: 0.5, // 当视频元素至少 50% 可见时触发回调
+  });
+
+  // 监听 videoContainer 元素
+  observer.observe(videoContainer.value);
+
+  // 自定义回调函数处理交叉观察结果
+  function handleIntersection(entries) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        // 元素进入视口
+        video.value.play(); // 播放视频
+      } else {
+        // 元素离开视口
+        video.value.pause(); // 暂停视频
+      }
+    });
+  }
+});
+
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect(); // 停止观察器
+  }
+});
 </script>
