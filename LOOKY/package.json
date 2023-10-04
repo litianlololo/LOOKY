@@ -19,6 +19,7 @@
     "tailwindcss": "^3.3.3"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "@pinia/nuxt": "^0.4.11",
     "axios": "^1.5.0",
     "pinia": "^2.1.6",

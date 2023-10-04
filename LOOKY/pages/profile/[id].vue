@@ -10,9 +10,10 @@
                 >
                 <div class="ml-5 w-full">
                     <div class="text-[30px] font-bold truncate">
-                        User name
+                        {{$userStore.name}}
                     </div>
-                    <div class="text-[18px] truncate">User name</div>
+                    <div v-if="$userStore.bio" class="text-[18px] truncate">{{ $userStore.bio }}</div>
+                    <div v-else class="text-[18px] truncate">这个人很懒，什么都没留下</div>
                     <button 
                         v-if="true"
                         class="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100"
@@ -59,16 +60,6 @@
 
             <div class="mt-4 grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3">
                 <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
-                <PostUser />
             </div>
         </div>
     </MainLayout>
@@ -76,8 +67,10 @@
 </template>
 
 <script setup>
+const {$userStore, $generalStore} = useNuxtApp()
 import MainLayout from '~/layouts/MainLayout.vue';
 import { storeToRefs } from 'pinia';
 
-const {$generalStore} = useNuxtApp()
+let name = ref(null);
+
 </script>

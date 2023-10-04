@@ -16,11 +16,12 @@
                 </div>
             </div>
             <div class="flex items-center justify-end gap-3 min-w-[275px] max-w-[320px] w-full">
-                <button class="flex items-center border rounded-sm px-3 py-[6px] hover:bg-gray-100">
+                <button  @click="navigateToUpload"
+                class="flex items-center border rounded-sm px-3 py-[6px] hover:bg-gray-100">
                     <Icon name="mdi:plus" color="#000000" size="22" />
                     <span class="px-2 font-medium text-[15px]">Upload</span>
                 </button>
-                <div v-if="!$userStore.id" class="flex items-center">
+                <div v-if="$userStore.id==''" class="flex items-center">
                     <button 
                         @click="$event=> $generalStore.isLoginOpen = true"
                         class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]">
@@ -61,6 +62,32 @@
 const {$userStore,$generalStore} = useNuxtApp()
 
 const route = useRoute()
+const router = useRouter();
 let showMenu = ref(false)
+
+const logout= async () => {
+    try{
+        // 清空用户信息
+        $userStore.id = '';
+        $userStore.name = '';
+        $userStore.bio = '';
+        $userStore.image = '';
+        $userStore.email = '';
+        $userStore.RegistrationDate = '';
+
+        $generalStore.isLoginOpen = false
+        await router.push({ path:'/' });
+    }catch(e){
+        console.log(e)
+    }
+}
+
+const navigateToUpload = async () => {
+    try{
+        await router.push({ name: 'upload' });
+    }catch(e){
+        console.log(e)
+    }
+}
 
 </script>

@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default defineNuxtConfig({
+export default({
   pages: true,
   css: ['~/assets/css/main.css'],
   modules: [
