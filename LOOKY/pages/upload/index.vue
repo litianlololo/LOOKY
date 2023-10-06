@@ -184,7 +184,7 @@ const createPost = async () => {
     const formData = new FormData();
     formData.append('Content', caption.value);
     formData.append('PosterID', $userStore.id);
-    formData.append('file', file.value);
+    formData.append('file', fileData.value);
     if(!file.value)
         console.log("File Empty");
     else
