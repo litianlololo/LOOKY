@@ -1,6 +1,6 @@
 <template>
-    <UploadError :errorType="errorType"/>
-    
+    <UploadError :errorType="errorType" />
+
     <UploadLayout>
         <div class="w-full mt-[80px] md-[40px] bg-white shadow-lg rounded-md py-6 md:px-10 px-4">
             <div>
@@ -10,12 +10,7 @@
 
             <div class="mt-8 md:flex gap-6">
 
-                <label 
-                    v-if="!fileDisplay" 
-                    for="fileInput" 
-                    @drop.prevent="onDrop" 
-                    @dragover.prevent="$event"
-                    class="
+                <label v-if="!fileDisplay" for="fileInput" @drop.prevent="onDrop" @dragover.prevent="$event" class="
                     md:mx-0
                     mx-auto
                     mt-4
@@ -45,13 +40,7 @@
                     <div class="px-2 py-1.5 mt-8 text-white text-[15px] w-[80%] bg-[#F02C56] rounded-sm">
                         Select file
                     </div>
-                    <input 
-                        ref="file" 
-                        type="file" 
-                        id="fileInput" 
-                        hidden accept=".mp4" 
-                        @input="onChange"
-                    />
+                    <input ref="file" type="file" id="fileInput" hidden accept=".mp4" @input="onChange" />
                 </label>
 
                 <div v-else class="
@@ -75,13 +64,13 @@
                     <img class="absolute z-20 pointer-events-none" src="~/assets/images/mobile-case.png">
                     <img class="absolute right-4 bottom-6 z-20" width="90" src="~/assets/images/tiktok-logo-white.png">
                     <video autoplay loop muted class="absolute rounded-xl object-cover z-10 p-[13px] w-full h-full"
-                        :src="fileDisplay"/>
+                        :src="fileDisplay" />
 
                     <div
                         class="absolute -bottom-12 flex items-center justify-between z-50 rounded-xl border w-full p-2 border-gray-300">
                         <div class="flex items-center truncate">
                             <Icon name="clarity:success-standard-line" size="16" class="min-w-[16px]" />
-                            <div class="text-[11px] pl-1 truncate text-ellipsis">{{fileData.name}}</div>
+                            <div class="text-[11px] pl-1 truncate text-ellipsis">{{ fileData.name }}</div>
                         </div>
                         <button @click="clearVideo" class="text-[11px] ml-2 font-semibold">
                             Change
@@ -109,7 +98,7 @@
                     <div class="mt-5">
                         <div class="flex items-center justify-between">
                             <div class="mb-1 text-[15px]">Caption</div>
-                            <div class="text-gray-400 text-[12px]">{{caption.length }}/150</div>
+                            <div class="text-gray-400 text-[12px]">{{ caption.length }}/150</div>
                         </div>
                         <input v-model="caption" maxlength="150" type="text" class="
                                 w-full
@@ -125,7 +114,8 @@
                             class="px-10 py-2.5 mt-8 border text-[16px] hover:bg-gray-100 rounded-lg">
                             Discard
                         </button>
-                        <button @click="createPost()"
+                        <button :disabled="!$userStore.id" :class="!$userStore.id ? 'bg-gray-200' : 'bg-[#F02C56]'"
+                            @click="createPost()"
                             class="px-10 py-2.5 mt-8 border text-[16px] text-white bg-[#F02C56] rounded-lg">
                             Post
                         </button>
@@ -137,7 +127,9 @@
 </template>
 
 <script setup>
+const { $userStore, $generalStore } = useNuxtApp()
 import UploadLayout from '~/layouts/UploadLayout.vue';
+import { message } from 'ant-design-vue';
 
 let file = ref(null)
 let fileDisplay = ref(null)
@@ -186,4 +178,33 @@ const clearVideo = () => {
     fileDisplay.value = null
     fileData.value = null
 }
+
+const createPost = async () => {
+  try {
+    const formData = new FormData();
+    formData.append('Content', caption.value);
+    formData.append('PosterID', $userStore.id);
+    formData.append('file', file.value);
+    if(!file.value)
+        console.log("File Empty");
+    else
+        console.log(file.value);
+    const response = await fetch('http://localhost:5000/post/createpost', {
+      method: 'POST',
+      body: formData, // 使用 formData 作为请求体
+    });
+    const data = await response.json();
+    console.log(data); // 打印响应数据
+    // 处理响应
+    if (response.ok) {
+        message.ok("发布成功");
+      // 请求成功，执行相关操作
+    } else {
+      // 请求失败，处理错误
+      message.error(data.message);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+};
 </script>
