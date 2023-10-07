@@ -201,7 +201,7 @@ const createPost = async () => {
       // 请求成功，执行相关操作
     } else {
       // 请求失败，处理错误
-      message.error(data.message);
+      message.error(data.message.error);
     }
   } catch (e) {
     console.error(e);

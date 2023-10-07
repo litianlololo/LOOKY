@@ -7,10 +7,7 @@
             <div class="flex items-center justify-between pb-0.5">
                 <button>
                     <span class="font-bold hover:underline cursor-pointer">
-                        User Name
-                    </span>
-                    <span class="text-[13px] text-light text-gray-500 pl-1 cursor-pointer">
-                        User Name
+                        {{ post.PosterID }}
                     </span>
                 </button>
                 <button
@@ -18,7 +15,7 @@
                     Follow
                 </button>
             </div>
-            <div class="text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">post text</div>
+            <div class="text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{post.Content}}</div>
             <div class="text-[14px] text-gray-500 pb-0.5">#fun #cool #SuperAwesome</div>
             <div class="text-[14px] pb-0.5 flex items-center font-semibold">
                 <Icon name="mdi:music" size="17" />
@@ -36,7 +33,7 @@
                         loop
                         muted
                         class="rounded-xl object-cover mx-auto h-full"
-                        src="/cat.mp4"
+                        :src="'http://localhost:5000/upload/' + post.VideoURL"
                     />
                     <img 
                         class="absolute right-2 bottom-8" 
@@ -53,21 +50,21 @@
                                     size="25" 
                                 />
                             </button>
-                            <span class="text-xs text-gray-800 font-semibold">23</span>
+                            <span class="text-xs text-gray-800 font-semibold">{{post.LikesCount}}</span>
                         </div>
 
                         <div class="pb-4 text-center">
                             <div class="rounded-full bg-gray-200 p-2 cursor-pointer">
                                 <Icon name="bx:bxs-message-rounded-dots" size="25"/>
                             </div>
-                            <span class="text-xs text-gray-800 font-semibold">43</span>
+                            <span class="text-xs text-gray-800 font-semibold">{{post.CommentsCount}}</span>
                         </div>
 
                         <div class="text-center">
                             <div class="rounded-full bg-gray-200 p-2 cursor-pointer">
                                 <Icon name="ri:share-forward-fill" size="25"/>
                             </div>
-                            <span class="text-xs text-gray-800 font-semibold">55</span>
+                            <span class="text-xs text-gray-800 font-semibold">{{post.ShareCount}}</span>
                         </div>
                     </div>
                 </div>
@@ -78,6 +75,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+
+const { post } = defineProps(['post']);
 
 let video = ref(null);
 let videoContainer = ref(null);
